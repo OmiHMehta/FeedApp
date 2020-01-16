@@ -41,8 +41,20 @@ dependencies {
     implementation androidSupport.appCompat
     implementation androidSupport.ktx
 
+    // TODO : List view for android
+    implementation androidSupport.recyclerView
+
     // TODO : Constraint-Layout
     implementation constraintLayout
+
+    // TODO : Retrofit for making API calls
+    implementation retrofit.networkCall
+
+    // TODO : Convert JSON response to Data class
+    implementation retrofit.gsonConverter
+
+    // TODO : OkHttp Interceptor
+    implementation okHttpInterceptor
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'

@@ -1,4 +1,4 @@
-ext{
+ext {
 
     appId = "com.telstra.feedapp"
     minVersion = 19
@@ -7,8 +7,9 @@ ext{
     versionCode = 1
     versionName = "1.0"
 
-    appCompatPackage = 'androidx.appcompat:appcompat'
     appCompatVersion = '1.1.0'
+    appCompatPackage = 'androidx.appcompat:appcompat'
+    recyclerViewPackage = "androidx.recyclerview:recyclerview"
 
     ktxPackage = "androidx.core:core-ktx"
     ktxVersion = "1.2.0-rc01"
@@ -25,14 +26,30 @@ ext{
     kotlinPackage = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     kotlinGradlePackage = "org.jetbrains.kotlin:kotlin-gradle-plugin"
     kotlinGradleSupport = buildDependency(kotlinGradlePackage, kotlinVersion)
-    kotlinSupport= buildDependency(kotlinPackage, kotlinVersion)
+    kotlinSupport = buildDependency(kotlinPackage, kotlinVersion)
+
+    retrofitVersion = "2.3.0"
+    retrofitNetworkCallPackage = "com.squareup.retrofit2:retrofit"
+    retrofitGsonConverterPackage = "com.squareup.retrofit2:converter-gson"
+    retrofit = buildDependency(retrofitNetworkCallPackage, retrofitVersion)
+    retrofitGsonConverter = buildDependency(retrofitGsonConverterPackage, retrofitVersion)
+
+    okhttpVersion = '3.12.0'
+    okhttpPackage = 'com.squareup.okhttp3:logging-interceptor'
+    okHttpInterceptor = buildDependency(okhttpPackage, okhttpVersion)
 
     androidSupport = [
-            appCompat : buildDependency(appCompatPackage, appCompatVersion),
-            ktx : buildDependency(ktxPackage, ktxVersion)
+            appCompat   : buildDependency(appCompatPackage, appCompatVersion),
+            ktx         : buildDependency(ktxPackage, ktxVersion),
+            recyclerView: buildDependency(recyclerViewPackage, appCompatVersion)
+    ]
+
+    retrofit = [
+            networkCall  : buildDependency(retrofitNetworkCallPackage, retrofitVersion),
+            gsonConverter: buildDependency(retrofitGsonConverterPackage, retrofitVersion)
     ]
 }
 
-static String buildDependency(String packageName, String packageVersion){
+static String buildDependency(String packageName, String packageVersion) {
     return "${packageName}:${packageVersion}"
 }
