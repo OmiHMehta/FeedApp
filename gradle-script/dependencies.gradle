@@ -1,0 +1,18 @@
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion
+
+ext{
+
+    appId = "com.telstra.feedapp"
+    minVersion = 19
+    targetVersion = 29
+    versionVode = 1
+    versionName = "1.0"
+
+    constraintLayoutVersion = ""
+    constraintLayoutPackage = ""
+
+}
+
+static String buildDependency(String packageName, String packageVersion){
+    return "${packageName}:${packageVersion}"
+}
