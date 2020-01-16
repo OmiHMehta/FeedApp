@@ -8,8 +8,13 @@ ext{
     versionVode = 1
     versionName = "1.0"
 
-    constraintLayoutVersion = ""
-    constraintLayoutPackage = ""
+    constraintLayoutVersion = "1.1.3"
+    constraintLayoutPackage = "androidx.constraintlayout:constraintlayout"
+    constraintLayout = buildDependency(constraintLayoutPackage, constraintLayoutVersion)
+
+    kotlinVersion = "1.3.11"
+    kotlinPackage = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    kotlinSupport = buildDependency(kotlinPackage, kotlinVersion)
 
 }
 
