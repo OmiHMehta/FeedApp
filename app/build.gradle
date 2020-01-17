@@ -7,7 +7,6 @@ android {
     compileSdkVersion targetVersion
     buildToolsVersion = buildVersion
 
-
     defaultConfig {
         applicationId appId
         minSdkVersion minVersion
@@ -34,12 +33,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // TODO : Kotlin Support
+    // TODO : Kotlin and Extensions Support
     implementation kotlinSupport
+    implementation androidSupport.ktx
 
     // TODO : AndroidX Support
     implementation androidSupport.appCompat
-    implementation androidSupport.ktx
+
+    // TODO : Swipe Down To Refresh
+    implementation androidSupport.swipeToRefresh
 
     // TODO : List view for android
     implementation androidSupport.recyclerView
@@ -53,8 +55,18 @@ dependencies {
     // TODO : Convert JSON response to Data class
     implementation retrofit.gsonConverter
 
+    // TODO : To use RxJava with Retrofit - call Adapter
+    implementation retrofit.retrofitRxJavaCallAdapter
+
     // TODO : OkHttp Interceptor
     implementation okHttpInterceptor
+
+    // TODO : For Reactive Programming
+    implementation RxJava
+    implementation RxAndroid
+
+    // TODO : For Image Loading
+    implementation glide
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
