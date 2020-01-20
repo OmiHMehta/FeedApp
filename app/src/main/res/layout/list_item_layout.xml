@@ -37,12 +37,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.50"
+            app:layout_constraintHeight_percent="0.60"
             app:layout_constraintStart_toEndOf="@id/tvDescription"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

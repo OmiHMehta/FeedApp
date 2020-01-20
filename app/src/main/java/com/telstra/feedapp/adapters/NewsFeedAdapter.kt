@@ -23,19 +23,16 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
 
     private val requestListener = object : RequestListener<Drawable> {
         override fun onLoadFailed(
-            error: GlideException?, model: Any?,
-            target: Target<Drawable>?, isFirstResource: Boolean
+            error: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean
         ): Boolean {
             println("TAG --- $TAG --> ${error?.message}")
             return false
         }
 
         override fun onResourceReady(
-            resource: Drawable?, model: Any?, target: Target<Drawable>?,
-            dataSource: DataSource?, isFirstResource: Boolean
-        ): Boolean {
-            return false
-        }
+            resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?
+            , isFirstResource: Boolean
+        ): Boolean = false
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {

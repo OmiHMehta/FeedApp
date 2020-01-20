@@ -1,6 +1,5 @@
 package com.telstra.feedapp.ui.Feeds.presenter
 
-import android.content.Context
 import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.adapters.NewsFeedAdapter
 import com.telstra.feedapp.models.NewsFeed
@@ -20,20 +19,26 @@ open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepos
         adapter = NewsFeedAdapter(feedList)
     }
 
+    // TODO : Api Callback
     override fun onSuccess(apiTag: String, message: String, apiResponse: NewsFeedRepository) {
         feedList.addAll(apiResponse.getDataList())
         adapter.notifyDataSetChanged()
         view.onDataFetched(apiResponse)
     }
 
+    // TODO : Api Callback
     override fun onComplete(apiTag: String, message: String) {
 
     }
 
+    // TODO : Api Callback
     override fun onError(apiTag: String, message: String) = view.onFailed(apiTag, message)
 
+    // TODO : Api Callback
     override fun onError(apiTag: String, throwable: Throwable) =
         view.onFailed(apiTag, throwable.message ?: "")
+
+    private fun getNewsFeedList() = apiClient.getNewsFeed(apiResponse = this)
 
     fun getAdapter() = adapter
 
@@ -42,8 +47,6 @@ open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepos
         adapter.notifyDataSetChanged()
         getNewsFeedList()
     }
-
-    fun getNewsFeedList() = apiClient.getNewsFeed(apiResponse = this)
 
     fun getFeedDataFromPosition(position: Int): String =
         if ((feedList.size > 0) && (position < feedList.size)) feedList[position].getTitle() else ""

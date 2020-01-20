@@ -29,10 +29,7 @@ class MainActivity : AppCompatActivity(), FeedView {
 
         val disposable =
             Observable.timer(650, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    slSwipeRefreshLayout.isRefreshing = true
-                    presenter.getNewsFeedList()
-                }
+                .subscribe { getData() }
     }
 
     override fun onDataFetched(newsRepo: NewsFeedRepository) {
@@ -48,6 +45,7 @@ class MainActivity : AppCompatActivity(), FeedView {
     private fun initViews() {
         ivRefresh.setOnClickListener { getData() }
 
+        // TODO : Setting up SwipeRefreshLayout
         slSwipeRefreshLayout.setColorSchemeResources(
             android.R.color.holo_blue_bright, android.R.color.holo_green_light,
             android.R.color.holo_orange_light, android.R.color.holo_red_light
@@ -67,6 +65,7 @@ class MainActivity : AppCompatActivity(), FeedView {
         })
     }
 
+    // TODO : Call api show data in List
     private fun getData() {
         slSwipeRefreshLayout.takeIf { !it.isRefreshing }.run {
             slSwipeRefreshLayout.isRefreshing = true
