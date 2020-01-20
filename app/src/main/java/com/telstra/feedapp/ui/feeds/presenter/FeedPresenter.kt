@@ -8,7 +8,7 @@ import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.view.FeedView
 
-open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepository> {
+open class FeedPresenter(private val view: FeedView) {
 
     private val apiClient: ApiInterceptor = FeedApp.getApiClient()
 
@@ -19,26 +19,26 @@ open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepos
         adapter = NewsFeedAdapter(feedList)
     }
 
-    // TODO : Api Callback
-    override fun onSuccess(apiTag: String, message: String, apiResponse: NewsFeedRepository) {
-        feedList.addAll(apiResponse.getDataList())
-        adapter.notifyDataSetChanged()
-        view.onDataFetched(apiResponse)
-    }
+    private fun getNewsFeedList() =
+        apiClient.getNewsFeed(apiResponse = object : ApiResponse<NewsFeedRepository> {
 
-    // TODO : Api Callback
-    override fun onComplete(apiTag: String, message: String) {
+            // TODO : Api Callback
+            override fun onSuccess(
+                apiTag: String, message: String, apiResponse: NewsFeedRepository
+            ) {
+                feedList.addAll(apiResponse.getDataList())
+                adapter.notifyDataSetChanged()
+                view.onDataFetched(apiResponse)
+            }
 
-    }
+            override fun onComplete(apiTag: String, message: String) {
+            }
 
-    // TODO : Api Callback
-    override fun onError(apiTag: String, message: String) = view.onFailed(apiTag, message)
+            override fun onError(apiTag: String, message: String) = view.onFailed(apiTag, message)
 
-    // TODO : Api Callback
-    override fun onError(apiTag: String, throwable: Throwable) =
-        view.onFailed(apiTag, throwable.message ?: "")
-
-    private fun getNewsFeedList() = apiClient.getNewsFeed(apiResponse = this)
+            override fun onError(apiTag: String, throwable: Throwable) =
+                view.onFailed(apiTag, throwable.message ?: "")
+        })
 
     fun getAdapter() = adapter
 
