@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), FeedView {
 
         initViews()
 
+        // TODO : Once UI is loaded fetch data from API
         val disposable =
             Observable.timer(650, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
                 .subscribe { getData() }

@@ -7,6 +7,7 @@ import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
 import com.telstra.feedapp.networkadapter.retrofit.RetrofitClient
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class ApiManager : ApiInterceptor {
@@ -17,7 +18,7 @@ class ApiManager : ApiInterceptor {
 
     override fun getNewsFeed(
         parameters: JsonObject, apiResponse: ApiResponse<NewsFeedRepository>?
-    ) = apiInterface.getNewsFeedsList()
+    ): Disposable = apiInterface.getNewsFeedsList()
         .subscribeOn(Schedulers.io())
         .unsubscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
@@ -30,5 +31,5 @@ class ApiManager : ApiInterceptor {
             apiResponse?.onError(ApiProvider.ApiGetNewsFeed, it)
         }, {
             apiResponse?.onComplete(ApiProvider.ApiGetNewsFeed, "")
-        })!!
+        })
 }

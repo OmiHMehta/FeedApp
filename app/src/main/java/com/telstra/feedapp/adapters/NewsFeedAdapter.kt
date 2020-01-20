@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.telstra.feedapp.R
 import com.telstra.feedapp.models.NewsFeed
@@ -20,6 +21,9 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
     RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     private val TAG: String = NewsFeedAdapter::class.java.simpleName
+
+    private val requestOptions: RequestOptions = RequestOptions().error(R.drawable.ic_place_holder)
+        .placeholder(R.drawable.ic_place_holder).fallback(R.drawable.ic_place_holder)
 
     private val requestListener = object : RequestListener<Drawable> {
         override fun onLoadFailed(
@@ -53,6 +57,7 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
             Glide.with(holder.ivImage.context)
                 .load(data.getImageUrl())
                 .listener(requestListener)
+                .apply(requestOptions)
                 .into(holder.ivImage)
 
         } catch (e: Exception) {
