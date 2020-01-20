@@ -9,11 +9,16 @@ class FeedApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        apiManager = ApiManager(this)
+        instance = this
+        apiManager = ApiManager()
     }
 
     companion object {
+
+        private lateinit var instance:FeedApp
         private lateinit var apiManager: ApiInterceptor
+
+        fun getInstance() = instance
         fun getApiClient() = apiManager
     }
 }

@@ -3,11 +3,13 @@ package com.telstra.feedapp.networkadapter.api.request
 import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import io.reactivex.Observable
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiInterface {
 
-    @POST(ApiProvider.ApiGetNewsFeed)
-    fun getNewsFeedsList(): Observable<NewsFeedRepository>
+    @GET("{url}")
+    fun getNewsFeedsList(@Path("url") apiUrl:String = ApiProvider.ApiGetNewsFeed): Observable<NewsFeedRepository>
 
 }

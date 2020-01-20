@@ -1,5 +1,6 @@
 package com.telstra.feedapp.networkadapter.api.request
 
+import android.content.Context
 import com.google.gson.JsonObject
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository

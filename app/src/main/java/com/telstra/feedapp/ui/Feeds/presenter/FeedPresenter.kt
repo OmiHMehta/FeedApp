@@ -1,5 +1,6 @@
 package com.telstra.feedapp.ui.Feeds.presenter
 
+import android.content.Context
 import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.adapters.NewsFeedAdapter
 import com.telstra.feedapp.models.NewsFeed
@@ -31,7 +32,8 @@ open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepos
 
     override fun onError(apiTag: String, message: String) = view.onFailed(apiTag, message)
 
-    override fun onError(apiTag: String, throwable: Throwable) = view.onFailed(apiTag)
+    override fun onError(apiTag: String, throwable: Throwable) =
+        view.onFailed(apiTag, throwable.message ?: "")
 
     fun getAdapter() = adapter
 

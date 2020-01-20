@@ -1,71 +1,103 @@
 package com.telstra.feedapp.networkadapter.retrofit
 
-import android.content.Context
 import com.google.gson.GsonBuilder
+import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.networkadapter.api.request.ApiInterface
 import com.telstra.feedapp.networkadapter.apiconstants.ApiConstants
 import com.telstra.feedapp.utility.NetworkProvider
 import okhttp3.Cache
+import okhttp3.CacheControl
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
-class RetrofitClient(private val context: Context) {
+class RetrofitClient {
+
+    private val TAG: String = RetrofitClient::class.java.simpleName
 
     private var apiInterface: ApiInterface? = null
     private var httpClient: OkHttpClient? = null
+
+    private val HEADER_CACHE_CONTROL = "Cache-Control"
 
     val apiClient: ApiInterface
         get() {
             if (httpClient == null) initOkHttp()
 
-            if (apiInterface == null) {
+            if (apiInterface == null)
                 apiInterface = Retrofit.Builder().baseUrl(ApiConstants.BASE_URL)
                     .client(httpClient!!)
                     .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build().create(ApiInterface::class.java)
-            }
 
             return apiInterface!!
         }
 
     private fun initOkHttp() {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        httpClient = OkHttpClient().newBuilder()
+            .cache(getCacheDir())
+            .addInterceptor(httpLoggingInterceptor())
+            .addNetworkInterceptor(networkInterceptor())
+            .addInterceptor(offlineInterceptor())
+            .build()
+    }
 
-        val cacheSize: Long = 10 * 1024 * 1024
-        val cache = Cache(context.cacheDir, cacheSize)
+    private fun httpLoggingInterceptor(): HttpLoggingInterceptor {
+        val httpLoggingInterceptor =
+            HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
+                println("TAG --- $TAG --> log: http log: $it")
+            })
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return httpLoggingInterceptor
+    }
 
-        val httpBuilder = OkHttpClient().newBuilder()
-            .cache(cache)
-            .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(interceptor).addInterceptor { chain ->
-                val originalResponse: Response = chain.proceed(chain.request())
-                val maxAge: Int
-                if (NetworkProvider.isConnected(context)) {
-                    maxAge = 60 // NOTE : Read cache for 1 minute
-                    originalResponse.newBuilder().header("Cache-Control", "public, max-age=$maxAge")
-                        .build()
-                } else {
-                    maxAge = 3600 * 24 * 28 // NOTE : Read cache for 4 weeks
-                    originalResponse.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-age=$maxAge")
-                        .build()
-                }
+    // TODO : Custom cache directory for app
+    private fun getCacheDir(): Cache {
+        val cacheDirectory = File(FeedApp.getInstance().cacheDir, "offline_caching")
+        val cacheSize: Long = 5 * 1024 * 1024
+        return Cache(cacheDirectory, cacheSize)
+    }
+
+    // TODO : Use "networkInterceptor" ONLY when network is available
+    private fun networkInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            println("TAG --- $TAG --> network interceptor : called.")
+            val response = chain.proceed(chain.request())
+            val cacheControl = CacheControl.Builder()
+                .maxAge(3, TimeUnit.SECONDS)
+                .build()
+            response.newBuilder()
+                .removeHeader(HEADER_CACHE_CONTROL)
+                .header(HEADER_CACHE_CONTROL, cacheControl.toString())
+                .build()
+        }
+    }
+
+    // TODO : Use "offlineInterceptor" when network is available/not
+    private fun offlineInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            println("TAG --- $TAG --> offline interceptor : called.")
+            var request = chain.request()
+
+            // TODO : Prevent caching when network is on. For that we use the "networkInterceptor"
+            if (!NetworkProvider.isConnected(FeedApp.getInstance())) {
+
+                // TODO : Cache data for 2 days
+                val cacheControl = CacheControl.Builder()
+                    .maxStale(2, TimeUnit.DAYS)
+                    .build()
+                request = request.newBuilder()
+                    .removeHeader(HEADER_CACHE_CONTROL)
+                    .cacheControl(cacheControl)
+                    .build()
             }
-
-        httpClient = httpBuilder.build()
+            chain.proceed(request)
+        }
     }
-
-    companion object {
-        private const val REQUEST_TIMEOUT = 30L
-    }
-
 }
