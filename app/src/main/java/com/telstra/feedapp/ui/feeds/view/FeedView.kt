@@ -1,4 +1,4 @@
-package com.telstra.feedapp.ui.Feeds.view
+package com.telstra.feedapp.ui.feeds.view
 
 import com.telstra.feedapp.repositories.NewsFeedRepository
 

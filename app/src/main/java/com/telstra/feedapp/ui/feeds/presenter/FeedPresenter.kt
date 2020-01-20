@@ -1,4 +1,4 @@
-package com.telstra.feedapp.ui.Feeds.presenter
+package com.telstra.feedapp.ui.feeds.presenter
 
 import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.adapters.NewsFeedAdapter
@@ -6,7 +6,7 @@ import com.telstra.feedapp.models.NewsFeed
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository
-import com.telstra.feedapp.ui.Feeds.view.FeedView
+import com.telstra.feedapp.ui.feeds.view.FeedView
 
 open class FeedPresenter(private val view: FeedView) : ApiResponse<NewsFeedRepository> {
 

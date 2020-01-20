@@ -1,4 +1,4 @@
-package com.telstra.feedapp.ui.Feeds.view
+package com.telstra.feedapp.ui.feeds.view
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.R
 import com.telstra.feedapp.repositories.NewsFeedRepository
-import com.telstra.feedapp.ui.Feeds.presenter.FeedPresenter
+import com.telstra.feedapp.ui.feeds.presenter.FeedPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*

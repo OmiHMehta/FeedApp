@@ -14,7 +14,7 @@
             android:supportsRtl="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.Feeds.view.MainActivity">
+        <activity android:name=".ui.feeds.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
