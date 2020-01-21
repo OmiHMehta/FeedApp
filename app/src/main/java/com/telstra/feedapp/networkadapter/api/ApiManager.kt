@@ -1,17 +1,14 @@
 package com.telstra.feedapp.networkadapter.api
 
-import androidx.annotation.NonNull
 import com.google.gson.JsonObject
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
-import com.telstra.feedapp.networkadapter.api.response.ApiStatus
 import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
 import com.telstra.feedapp.networkadapter.retrofit.RetrofitClient
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Response
 
 class ApiManager : ApiInterceptor {
 
