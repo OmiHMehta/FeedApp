@@ -19,6 +19,7 @@ open class FeedPresenter(private val view: FeedView) {
         adapter = NewsFeedAdapter(feedList)
     }
 
+    // TODO : API call
     private fun getNewsFeedList() =
         apiClient.getNewsFeed(apiResponse = object : ApiResponse<NewsFeedRepository> {
 
@@ -40,9 +41,9 @@ open class FeedPresenter(private val view: FeedView) {
                 view.onFailed(apiTag, throwable.message ?: "")
         })
 
-    fun getAdapter() =
-        adapter
+    fun getAdapter() = adapter
 
+    // TODO : Clear previous data and fetch new data
     fun refreshNewsFeedList() {
         feedList.clear()
         adapter.notifyDataSetChanged()

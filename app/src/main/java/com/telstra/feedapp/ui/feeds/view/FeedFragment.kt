@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.R
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.presenter.FeedPresenter
+import com.telstra.feedapp.utility.NetworkProvider
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_feed.*
