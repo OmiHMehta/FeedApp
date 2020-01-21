@@ -10,6 +10,8 @@ import com.telstra.feedapp.ui.feeds.view.FeedView
 
 open class FeedPresenter(private val view: FeedView) {
 
+    private val TAG: String = FeedPresenter::class.java.simpleName
+
     private val apiClient: ApiInterceptor = FeedApp.getApiClient()
 
     private val adapter: NewsFeedAdapter
@@ -49,6 +51,6 @@ open class FeedPresenter(private val view: FeedView) {
     }
 
     fun getFeedDataFromPosition(position: Int): String =
-        if ((feedList.size > 0) && (position < feedList.size)) feedList[position].getTitle() else ""
-
+        if ((position >= 0) && (feedList.size > 0) && (position < feedList.size)) feedList[position].getTitle()
+        else ""
 }

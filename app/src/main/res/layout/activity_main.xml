@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.feeds.view.MainActivity">
+        tools:context=".ui.feeds.MainActivity">
 
     <include
             android:id="@+id/toolBar"
             layout="@layout/toolbar" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/slSwipeRefreshLayout"
+    <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNewsFeedList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="@dimen/margin_padding_10"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent" />
 
 </LinearLayout>

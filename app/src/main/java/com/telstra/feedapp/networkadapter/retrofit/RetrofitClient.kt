@@ -70,7 +70,7 @@ class RetrofitClient {
             println("TAG --- $TAG --> network interceptor : called.")
             val response = chain.proceed(chain.request())
             val cacheControl = CacheControl.Builder()
-                .maxAge(3, TimeUnit.SECONDS)
+                .maxAge(5, TimeUnit.SECONDS)
                 .build()
             response.newBuilder()
                 .removeHeader(HEADER_CACHE_CONTROL)
