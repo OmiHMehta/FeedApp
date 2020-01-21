@@ -89,8 +89,4 @@ class FeedFragment : Fragment(), FeedView {
             presenter.refreshNewsFeedList()
         }
     }
-
-    companion object {
-        private const val TAG_RECYCLERVIIEW_STATE: String = "recyclerview_state"
-    }
 }

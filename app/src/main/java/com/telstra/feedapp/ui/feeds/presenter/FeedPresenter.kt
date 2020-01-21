@@ -42,7 +42,8 @@ open class FeedPresenter(private val view: FeedView) {
                 view.onFailed(apiTag, throwable.message ?: "")
         })
 
-    fun getAdapter() = adapter
+    fun getAdapter() =
+        adapter
 
     fun refreshNewsFeedList() {
         feedList.clear()
