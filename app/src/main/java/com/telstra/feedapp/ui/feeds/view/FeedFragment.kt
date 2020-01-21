@@ -1,6 +1,5 @@
 package com.telstra.feedapp.ui.feeds.view
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,11 +39,6 @@ class FeedFragment : Fragment(), FeedView {
         val disposable =
             Observable.timer(650, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
                 .subscribe { getData() }
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        presenter.getAdapter().notifyDataSetChanged()
     }
 
     override fun onDataFetched(newsRepo: NewsFeedRepository) {
