@@ -9,9 +9,8 @@ import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG: String = MainActivity::class.java.simpleName
-
     private val TAG_FEED_FRAGMENT: String = FeedFragment::class.java.simpleName
+
     private var feedFragment: FeedFragment = FeedFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {

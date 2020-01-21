@@ -52,7 +52,6 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
             val data: NewsFeed = feedList[position]
              holder.tvTitle.text = data.getTitle()
              holder.tvDescription.text = data.getDescription()
-            println("TAG --- $TAG --> ${data.getImageUrl()}")
 
             Glide.with(holder.ivImage.context)
                 .load(data.getImageUrl())

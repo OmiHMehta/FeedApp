@@ -20,8 +20,6 @@ import java.util.concurrent.TimeUnit
 
 class FeedFragment : Fragment(), FeedView {
 
-    private val TAG: String = FeedFragment::class.java.simpleName
-
     private val presenter: FeedPresenter = FeedPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

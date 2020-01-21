@@ -10,8 +10,6 @@ import com.telstra.feedapp.ui.feeds.view.FeedView
 
 open class FeedPresenter(private val view: FeedView) {
 
-    private val TAG: String = FeedPresenter::class.java.simpleName
-
     private val apiClient: ApiInterceptor = FeedApp.getApiClient()
 
     private val adapter: NewsFeedAdapter
