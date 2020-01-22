@@ -1,6 +1,5 @@
 package com.telstra.feedapp.ui.feeds.presenter
 
-import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.adapters.NewsFeedAdapter
 import com.telstra.feedapp.models.NewsFeed
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
@@ -8,9 +7,7 @@ import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.view.FeedView
 
-open class FeedPresenter(private val view: FeedView) {
-
-    private val apiClient: ApiInterceptor = FeedApp.getApiClient()
+open class FeedPresenter(private val apiClient: ApiInterceptor, private val view: FeedView) {
 
     private val adapter: NewsFeedAdapter
     private val feedList: MutableList<NewsFeed> = mutableListOf()
@@ -20,7 +17,7 @@ open class FeedPresenter(private val view: FeedView) {
     }
 
     // TODO : API call
-    private fun getNewsFeedList() =
+    fun getNewsFeedList() =
         apiClient.getNewsFeed(apiResponse = object : ApiResponse<NewsFeedRepository> {
 
             // TODO : Api Callback
@@ -43,12 +40,8 @@ open class FeedPresenter(private val view: FeedView) {
 
     fun getAdapter() = adapter
 
-    // TODO : Clear previous data and fetch new data
-    fun refreshNewsFeedList() {
-        feedList.clear()
-        adapter.notifyDataSetChanged()
-        getNewsFeedList()
-    }
+    // TODO : Clear previous data
+    fun clearData() = feedList.clear()
 
     fun getFeedDataFromPosition(position: Int): String =
         if ((position >= 0) && (feedList.size > 0) && (position < feedList.size)) feedList[position].getTitle()

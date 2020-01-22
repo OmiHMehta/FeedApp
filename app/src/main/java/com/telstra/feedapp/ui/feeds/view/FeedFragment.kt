@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.R
+import com.telstra.feedapp.networkadapter.api.ApiManager
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.presenter.FeedPresenter
-import com.telstra.feedapp.utility.NetworkProvider
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_feed.*
@@ -20,11 +20,12 @@ import java.util.concurrent.TimeUnit
 
 class FeedFragment : Fragment(), FeedView {
 
-    private val presenter: FeedPresenter = FeedPresenter(this)
+    private lateinit var presenter: FeedPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        presenter = FeedPresenter(ApiManager.getInstance(context!!), this)
     }
 
     override fun onCreateView(
@@ -79,7 +80,12 @@ class FeedFragment : Fragment(), FeedView {
     private fun getData() {
         slSwipeRefreshLayout.takeIf { !it.isRefreshing }.run {
             slSwipeRefreshLayout.isRefreshing = true
-            presenter.refreshNewsFeedList()
+
+            presenter.clearData()
+            rvNewsFeedList.adapter?.notifyDataSetChanged()
+
+            Observable.timer(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
+                .subscribe { presenter.getNewsFeedList() }
         }
     }
 }

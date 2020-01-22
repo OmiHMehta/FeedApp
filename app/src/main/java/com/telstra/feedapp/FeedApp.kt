@@ -10,15 +10,17 @@ class FeedApp : Application() {
         super.onCreate()
 
         instance = this
-        apiManager = ApiManager()
+
+        // apiManager = ApiManager()
+        apiManager = ApiManager.getInstance(instance)
     }
 
     companion object {
 
-        private lateinit var instance:FeedApp
+        private lateinit var instance: Application
         private lateinit var apiManager: ApiInterceptor
 
         fun getInstance() = instance
-        fun getApiClient() = apiManager
+        fun getApiClient(): ApiInterceptor = apiManager
     }
 }
