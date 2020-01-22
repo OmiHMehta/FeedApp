@@ -16,9 +16,9 @@ class ApiManager() : ApiInterceptor {
 
     private val TAG: String = ApiManager::class.java.simpleName
 
-    private var apiInterface: ApiInterface
+    private var apiInterface: ApiInterface = RetrofitClient().apiClient
 
-    companion object {
+    /*companion object {
 
         private var apiManager: ApiInterceptor? = null
         private var context: Context? = null
@@ -34,7 +34,7 @@ class ApiManager() : ApiInterceptor {
 
     init {
         apiInterface = RetrofitClient(context!!).apiClient
-    }
+    }*/
 
     override fun getNewsFeed(
         parameters: JsonObject, apiResponse: ApiResponse<NewsFeedRepository>?

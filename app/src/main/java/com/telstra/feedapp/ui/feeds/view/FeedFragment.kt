@@ -20,12 +20,11 @@ import java.util.concurrent.TimeUnit
 
 class FeedFragment : Fragment(), FeedView {
 
-    private lateinit var presenter: FeedPresenter
+    private val presenter: FeedPresenter= FeedPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        presenter = FeedPresenter(ApiManager.getInstance(context!!), this)
     }
 
     override fun onCreateView(

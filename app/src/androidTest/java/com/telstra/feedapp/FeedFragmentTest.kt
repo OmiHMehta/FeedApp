@@ -20,7 +20,7 @@ open class FeedFragmentTest {
     private var activity: MainActivity? = null
 
     @get:Rule
-    public var testRule: ActivityTestRule<MainActivity>? =
+    var testRule: ActivityTestRule<MainActivity>? =
         ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Before

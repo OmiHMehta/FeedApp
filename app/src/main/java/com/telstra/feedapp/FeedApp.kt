@@ -11,8 +11,7 @@ class FeedApp : Application() {
 
         instance = this
 
-        // apiManager = ApiManager()
-        apiManager = ApiManager.getInstance(instance)
+         apiManager = ApiManager()
     }
 
     companion object {
