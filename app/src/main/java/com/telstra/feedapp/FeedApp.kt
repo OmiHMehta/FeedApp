@@ -1,8 +1,6 @@
 package com.telstra.feedapp
 
 import android.app.Application
-import com.telstra.feedapp.networkadapter.api.ApiManager
-import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 
 class FeedApp : Application() {
 
@@ -11,15 +9,15 @@ class FeedApp : Application() {
 
         instance = this
 
-         apiManager = ApiManager()
+        //apiManager = ApiManager()
     }
 
     companion object {
 
         private lateinit var instance: Application
-        private lateinit var apiManager: ApiInterceptor
+        //private lateinit var apiManager: ApiInterceptor
 
         fun getInstance() = instance
-        fun getApiClient(): ApiInterceptor = apiManager
+        //fun getApiClient(): ApiInterceptor = apiManager
     }
 }

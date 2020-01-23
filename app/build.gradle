@@ -28,6 +28,10 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -68,11 +72,12 @@ dependencies {
     // TODO : For Image Loading
     implementation glide
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    // TODO : Unit Testing
+    testImplementation jUnitTesting.jUnit
+    androidTestImplementation jUnitTesting.testRunner
+    androidTestImplementation jUnitTesting.testRule
 
-    testImplementation 'org.mockito:mockito-core:2.7.22'
-   /* androidTestImplementation 'org.mockito:mockito-android:2.7.22'*/
+    // TODO : Mockito for Unit Testing
+    testImplementation mockito.mockitoInline
+    testImplementation mockito.mockitoCore
 }

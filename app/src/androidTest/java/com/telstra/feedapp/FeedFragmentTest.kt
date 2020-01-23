@@ -24,9 +24,7 @@ open class FeedFragmentTest {
         ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Before
-    fun setUp() {
-        testRule?.let { activity = it.activity }
-    }
+    fun setUp() = testRule?.let { activity = it.activity }
 
     @Test
     fun fragmentLaunchTest() {

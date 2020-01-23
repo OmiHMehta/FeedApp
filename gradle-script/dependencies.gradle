@@ -52,6 +52,17 @@ ext {
     glidePackage = 'com.github.bumptech.glide:glide'
     glide = buildDependency(glidePackage, glideVersion)
 
+    junitVersion = '4.12'
+    junitPackage = 'junit:junit'
+
+    testVersion = '1.2.0'
+    testRunnerPackage = 'androidx.test:runner'
+    testRule = 'androidx.test:rules'
+
+    mockitoVersion = '2.13.0'
+    mockitoInlinePackage = 'org.mockito:mockito-inline'
+    mockitoCorePackage = 'org.mockito:mockito-core'
+
     androidSupport = [
             appCompat     : buildDependency(appCompatPackage, appCompatVersion),
             ktx           : buildDependency(ktxPackage, ktxVersion),
@@ -63,6 +74,17 @@ ext {
             networkCall              : buildDependency(retrofitNetworkCallPackage, retrofitVersion),
             gsonConverter            : buildDependency(retrofitGsonConverterPackage, retrofitVersion),
             retrofitRxJavaCallAdapter: buildDependency(retrofitRxJavaCallAdapterPackage, retrofitVersion),
+    ]
+
+    jUnitTesting = [
+            jUnit     : buildDependency(junitPackage, junitVersion),
+            testRunner: buildDependency(testRunnerPackage, testVersion),
+            testRule  : buildDependency(testRule, testVersion)
+    ]
+
+    mockito = [
+            mockitoInline: buildDependency(mockitoInlinePackage, mockitoVersion),
+            mockitoCore  : buildDependency(mockitoCorePackage, mockitoVersion)
     ]
 }
 

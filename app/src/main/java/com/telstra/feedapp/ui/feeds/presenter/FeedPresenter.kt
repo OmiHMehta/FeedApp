@@ -1,6 +1,5 @@
 package com.telstra.feedapp.ui.feeds.presenter
 
-import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.adapters.NewsFeedAdapter
 import com.telstra.feedapp.models.NewsFeed
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
@@ -8,9 +7,9 @@ import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.view.FeedView
 
-open class FeedPresenter(private val view: FeedView) {
+open class FeedPresenter(private val apiClient: ApiInterceptor, private val view: FeedView) {
 
-    private val apiClient: ApiInterceptor = FeedApp.getApiClient()
+    // private val apiClient: ApiInterceptor = ApiManager.getInstance(context)
 
     private val adapter: NewsFeedAdapter
     private val feedList: MutableList<NewsFeed> = mutableListOf()

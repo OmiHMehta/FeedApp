@@ -1,7 +1,7 @@
 package com.telstra.feedapp.networkadapter.retrofit
 
+import android.content.Context
 import com.google.gson.GsonBuilder
-import com.telstra.feedapp.FeedApp
 import com.telstra.feedapp.networkadapter.api.request.ApiInterface
 import com.telstra.feedapp.networkadapter.apiconstants.ApiConstants
 import com.telstra.feedapp.utility.NetworkProvider
@@ -25,13 +25,19 @@ class RetrofitClient() {
 
     private val HEADER_CACHE_CONTROL = "Cache-Control"
 
-    /*companion object {
+    companion object {
+
         private var context: Context? = null
-        fun getInstance(context: Context) {
-            if (context == null)
+        private lateinit var instance: RetrofitClient
+
+        fun getInstance(context: Context): RetrofitClient {
+            if (this.context == null) {
                 this.context = context
+                instance = RetrofitClient()
+            }
+            return instance
         }
-    }*/
+    }
 
     val apiClient: ApiInterface
         get() {
@@ -67,7 +73,7 @@ class RetrofitClient() {
 
     // TODO : Custom cache directory for app
     private fun getCacheDir(): Cache {
-        val cacheDirectory = File(FeedApp.getInstance().cacheDir, "offline_caching")
+        val cacheDirectory = File(context!!.cacheDir, "offline_caching")
         val cacheSize: Long = 5 * 1024 * 1024
         return Cache(cacheDirectory, cacheSize)
     }
@@ -94,7 +100,7 @@ class RetrofitClient() {
             var request = chain.request()
 
             // TODO : Prevent caching when network is on. For that we use the "networkInterceptor"
-            if (!NetworkProvider.isConnected(FeedApp.getInstance())) {
+            if (!NetworkProvider.isConnected(context!!)) {
 
                 // TODO : Cache data for 2 days
                 val cacheControl = CacheControl.Builder()
