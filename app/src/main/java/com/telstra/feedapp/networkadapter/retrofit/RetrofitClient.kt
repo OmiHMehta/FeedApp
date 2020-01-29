@@ -58,7 +58,7 @@ class RetrofitClient() {
             .cache(getCacheDir())
             .addInterceptor(httpLoggingInterceptor())
             .addNetworkInterceptor(networkInterceptor())
-            .addInterceptor(offlineInterceptor())
+            //.addInterceptor(offlineInterceptor())
             .build()
     }
 

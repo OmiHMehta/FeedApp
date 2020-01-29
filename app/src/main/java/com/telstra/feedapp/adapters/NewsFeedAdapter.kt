@@ -17,10 +17,12 @@ import com.telstra.feedapp.R
 import com.telstra.feedapp.models.NewsFeed
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 
-class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
+class NewsFeedAdapter() :
     RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     private val TAG: String = NewsFeedAdapter::class.java.simpleName
+
+    private var feedList: List<NewsFeed> = emptyList()
 
     private val requestOptions: RequestOptions = RequestOptions().error(R.drawable.ic_place_holder)
         .placeholder(R.drawable.ic_place_holder).fallback(R.drawable.ic_place_holder)
@@ -40,8 +42,8 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val customView: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.list_item_layout, parent, false)
+        val customView: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item_layout, parent, false)
         return NewsViewHolder(customView)
     }
 
@@ -50,8 +52,8 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         try {
             val data: NewsFeed = feedList[position]
-             holder.tvTitle.text = data.getTitle()
-             holder.tvDescription.text = data.getDescription()
+            holder.tvTitle.text = data.getTitle()
+            holder.tvDescription.text = data.getDescription()
 
             Glide.with(holder.ivImage.context)
                 .load(data.getImageUrl())
@@ -62,6 +64,11 @@ class NewsFeedAdapter(private val feedList: List<NewsFeed>) :
         } catch (e: Exception) {
             println("TAG --- $TAG --> ${e.message}")
         }
+    }
+
+    internal fun setListData(feedList: MutableList<NewsFeed>) {
+        this.feedList = feedList
+        notifyDataSetChanged()
     }
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

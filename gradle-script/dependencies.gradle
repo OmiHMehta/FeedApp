@@ -37,6 +37,11 @@ ext {
     okhttpPackage = 'com.squareup.okhttp3:logging-interceptor'
     okHttpInterceptor = buildDependency(okhttpPackage, okhttpVersion)
 
+    roomVersion = "2.2.1"
+    roomRuntimePackage = "androidx.room:room-runtime"
+    roomKotlinExtentionsPackage = "androidx.room:room-ktx"
+    roomCompilerPackage = "androidx.room:room-compiler"
+
     RxJavaVersion = "2.2.17"
     RxJavaPackage = "io.reactivex.rxjava2:rxjava"
     RxJava = buildDependency(RxJavaPackage, RxJavaVersion)
@@ -74,6 +79,12 @@ ext {
             networkCall              : buildDependency(retrofitNetworkCallPackage, retrofitVersion),
             gsonConverter            : buildDependency(retrofitGsonConverterPackage, retrofitVersion),
             retrofitRxJavaCallAdapter: buildDependency(retrofitRxJavaCallAdapterPackage, retrofitVersion),
+    ]
+
+    roomDB = [
+            roomRuntime : buildDependency(roomRuntimePackage, roomVersion),
+            roomKotlinExtentions : buildDependency(roomKotlinExtentionsPackage, roomVersion),
+            roomCompiler : buildDependency(roomCompilerPackage, roomVersion)
     ]
 
     jUnitTesting = [

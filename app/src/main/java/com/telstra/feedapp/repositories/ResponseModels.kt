@@ -11,9 +11,9 @@ class NewsFeedRepository : ApiStatus() {
     private val title: String? = null
 
     @SerializedName(ApiConstants.Rows)
-    private val dataList: List<NewsFeed>? = mutableListOf()
+    private val dataList: MutableList<NewsFeed>? = mutableListOf()
 
     fun getTitle() = title ?: "N/A"
 
-    fun getDataList(): List<NewsFeed> = dataList ?: mutableListOf()
+    fun getDataList(): MutableList<NewsFeed> = dataList ?: mutableListOf()
 }
