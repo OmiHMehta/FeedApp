@@ -1,6 +1,7 @@
 package com.telstra.feedapp.ui.feeds.view
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.R
-import com.telstra.feedapp.networkadapter.api.ApiManager
+import com.telstra.feedapp.adapters.NewsFeedAdapter
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.presenter.FeedPresenter
 import io.reactivex.Observable
@@ -20,12 +21,20 @@ import java.util.concurrent.TimeUnit
 
 class FeedFragment : Fragment(), FeedView {
 
+    private val KEY_FRAGMENT_STATE = "key_fragment_state"
+    private val KEY_RECYCLERVIEW_STATE = "key_recyclerview_state"
+
+    private var recyclerViewState: Parcelable? = null
+
     private lateinit var presenter: FeedPresenter
+
+    private lateinit var adapter: NewsFeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        presenter = FeedPresenter(ApiManager.getInstance(context!!), this)
+        presenter = FeedPresenter.getInstance(context!!, this)
+        adapter = NewsFeedAdapter(presenter.getData())
     }
 
     override fun onCreateView(
@@ -37,15 +46,30 @@ class FeedFragment : Fragment(), FeedView {
 
         initViews()
 
-        // TODO : Once UI is loaded fetch data from API
-        val disposable =
-            Observable.timer(650, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
+        // TODO : Once UI is loaded fetch data from API and Restore View State
+        if (savedInstanceState == null)
+            Observable.timer(650, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { getData() }
+        else {
+            recyclerViewState = savedInstanceState.getParcelable(KEY_RECYCLERVIEW_STATE)
+            rvNewsFeedList.layoutManager!!.onRestoreInstanceState(recyclerViewState)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(KEY_FRAGMENT_STATE, "launched")
+        rvNewsFeedList.layoutManager?.run {
+            recyclerViewState = onSaveInstanceState()
+            outState.putParcelable(KEY_RECYCLERVIEW_STATE, recyclerViewState)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDataFetched(newsRepo: NewsFeedRepository) {
         slSwipeRefreshLayout.isRefreshing = false
         activity!!.tvTitle.text = newsRepo.getTitle()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onFailed(apiTag: String, message: String) {
@@ -63,7 +87,8 @@ class FeedFragment : Fragment(), FeedView {
         )
         slSwipeRefreshLayout.setOnRefreshListener { getData() }
 
-        rvNewsFeedList.adapter = presenter.getAdapter()
+        rvNewsFeedList.isSaveEnabled = true
+        rvNewsFeedList.adapter = adapter
         rvNewsFeedList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -81,8 +106,7 @@ class FeedFragment : Fragment(), FeedView {
         slSwipeRefreshLayout.takeIf { !it.isRefreshing }.run {
             slSwipeRefreshLayout.isRefreshing = true
 
-            presenter.clearData()
-            rvNewsFeedList.adapter?.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
 
             Observable.timer(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
                 .subscribe { presenter.getNewsFeedList() }

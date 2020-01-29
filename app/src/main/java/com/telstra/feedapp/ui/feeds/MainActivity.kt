@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG_FEED_FRAGMENT: String = FeedFragment::class.java.simpleName
 
-    private var feedFragment: FeedFragment = FeedFragment()
+    private lateinit var feedFragment: FeedFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +19,18 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        val fTransition = supportFragmentManager.beginTransaction()
-        fTransition.add(R.id.fragmentContainer, feedFragment, TAG_FEED_FRAGMENT).commit()
+        feedFragment = if (savedInstanceState == null) FeedFragment()
+        else supportFragmentManager.findFragmentByTag(TAG_FEED_FRAGMENT) as FeedFragment
+
+        if (!feedFragment.isAdded) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, feedFragment, TAG_FEED_FRAGMENT).commit()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("fragment_launch_status", true)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

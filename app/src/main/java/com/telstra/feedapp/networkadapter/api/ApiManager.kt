@@ -19,17 +19,6 @@ class ApiManager(context: Context) : ApiInterceptor {
 
     private var apiInterface: ApiInterface = RetrofitClient.getInstance(context).apiClient
 
-    companion object {
-
-        private var apiManager: ApiInterceptor? = null
-
-        fun getInstance(context: Context): ApiInterceptor {
-            if (apiManager == null)
-                apiManager = ApiManager(context)
-            return apiManager!!
-        }
-    }
-
     override fun getNewsFeed(
         parameters: JsonObject, apiResponse: ApiResponse<NewsFeedRepository>?
     ): Disposable = apiInterface.getNewsFeedsList()

@@ -15,8 +15,7 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity android:name=".ui.feeds.MainActivity"
-                android:screenOrientation="sensor"
-                android:configChanges="orientation|screenSize|keyboardHidden">
+                android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
