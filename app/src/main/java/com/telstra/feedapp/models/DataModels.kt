@@ -11,7 +11,7 @@ import com.telstra.feedapp.networkadapter.apiconstants.ApiConstants
 data class NewsFeed(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
 
     @SerializedName(ApiConstants.Title)
     private val title: String? = "",

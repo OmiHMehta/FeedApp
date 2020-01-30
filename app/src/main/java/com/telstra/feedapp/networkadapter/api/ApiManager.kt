@@ -8,9 +8,7 @@ import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
 import com.telstra.feedapp.networkadapter.retrofit.RetrofitClient
 import com.telstra.feedapp.repositories.NewsFeedRepository
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class ApiManager(context: Context) : ApiInterceptor {
@@ -21,17 +19,17 @@ class ApiManager(context: Context) : ApiInterceptor {
 
     override fun getNewsFeed(
         parameters: JsonObject, apiResponse: ApiResponse<NewsFeedRepository>?
-    ): Disposable = apiInterface.getNewsFeedsList()
-            .subscribeOn(Schedulers.io())
-            .unsubscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                // TODO : Get Response Here
-                apiResponse?.onSuccess(ApiProvider.ApiGetNewsFeed, "", it)
-            }, {
-                // TODO : Got Some error
-                apiResponse?.onError(ApiProvider.ApiGetNewsFeed, it)
-            }, {
-                apiResponse?.onComplete(ApiProvider.ApiGetNewsFeed, "")
-            })
+    ) = apiInterface.getNewsFeedsList()
+        .subscribeOn(Schedulers.io())
+        .unsubscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({
+            // TODO : Get Response Here
+            apiResponse?.onSuccess(ApiProvider.ApiGetNewsFeed, "", it)
+        }, {
+            // TODO : Got Some error
+            apiResponse?.onError(ApiProvider.ApiGetNewsFeed, it)
+        }, {
+            apiResponse?.onComplete(ApiProvider.ApiGetNewsFeed, "")
+        })
 }

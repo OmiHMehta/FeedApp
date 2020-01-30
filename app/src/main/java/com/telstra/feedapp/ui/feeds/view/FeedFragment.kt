@@ -95,11 +95,10 @@ class FeedFragment : Fragment(), FeedView {
     }
 
     // TODO : Call api show data in List
-    private fun getData() {
+    private fun getData() =
         slSwipeRefreshLayout.takeIf { !it.isRefreshing }.run {
             slSwipeRefreshLayout.isRefreshing = true
             Observable.timer(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
                 .subscribe { presenter.getNewsFeedList() }
         }
-    }
 }
