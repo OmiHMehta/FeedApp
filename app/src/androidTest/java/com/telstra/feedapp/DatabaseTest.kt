@@ -30,10 +30,8 @@ class DatabaseTest {
     fun setUp() {
         testRule?.let {
             activity = it.activity
-
             database = RoomDatabaseBuilder.getInstance(activity!!)
             nFeedDao = database.getNewsFeedDao()
-            nFeedDao?.deleteAllData()
         }
     }
 
@@ -50,12 +48,24 @@ class DatabaseTest {
             nFeedDao!!.insertData(tempData)
         } catch (e: Exception) {
             println("TAG --- $TAG --> ${e.message}")
+        } finally {
+            database.close()`
+        }
+    }
+
+    @Test
+    fun testDeleteDataFromDataBase() {
+        try {
+            nFeedDao?.deleteAllData()
+        } catch (e: Exception) {
+            println("TAG --- $TAG --> ${e.message}")
+        } finally {
+            database.close()
         }
     }
 
     @After
     fun tearDown() {
-        database.close()
         nFeedDao = null
     }
 }

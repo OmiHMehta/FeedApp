@@ -49,6 +49,7 @@ open class FeedPresenterTest {
 
         val database = RoomDatabaseBuilder.getInstance(context)
         nFeedDao = database.getNewsFeedDao()
+
     }
 
     @Test
