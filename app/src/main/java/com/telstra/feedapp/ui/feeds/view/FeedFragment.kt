@@ -49,10 +49,9 @@ class FeedFragment : Fragment(), FeedView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { getData() }
         else
-            rvNewsFeedList.layoutManager!!
-                .onRestoreInstanceState(
-                    presenter.getRecyclerViewState(savedInstanceState)
-                )
+            rvNewsFeedList.layoutManager!!.onRestoreInstanceState(
+                presenter.getRecyclerViewState(savedInstanceState)
+            )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
