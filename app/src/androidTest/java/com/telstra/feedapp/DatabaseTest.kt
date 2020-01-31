@@ -49,7 +49,7 @@ class DatabaseTest {
         } catch (e: Exception) {
             println("TAG --- $TAG --> ${e.message}")
         } finally {
-            database.close()`
+            database.close()
         }
     }
 
