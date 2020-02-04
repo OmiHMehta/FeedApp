@@ -35,7 +35,7 @@ open class FeedPresenterTest {
     private lateinit var context: Context
 
     @Mock
-    lateinit var view: FeedView˚
+    lateinit var view: FeedView
 
     @Mock
     internal lateinit var apiClient: ApiInterceptor
