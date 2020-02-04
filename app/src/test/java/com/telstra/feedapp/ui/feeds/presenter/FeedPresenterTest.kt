@@ -1,7 +1,6 @@
 package com.telstra.feedapp.ui.feeds.presenter
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
@@ -32,13 +31,11 @@ open class FeedPresenterTest {
 
     private val response: NewsFeedRepository = NewsFeedRepository()
 
-    private val lifecycleOwner: LifecycleOwner = Mockito.mock(LifecycleOwner::class.java)
-
     @Mock
     private lateinit var context: Context
 
     @Mock
-    lateinit var view: FeedView
+    lateinit var view: FeedView˚
 
     @Mock
     internal lateinit var apiClient: ApiInterceptor
