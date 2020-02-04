@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.database.room.RoomDatabaseBuilder
 import com.telstra.feedapp.database.roomrepository.FeedRepository
 import com.telstra.feedapp.models.NewsFeed
-import com.telstra.feedapp.networkadapter.api.ApiManager
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
 import com.telstra.feedapp.repositories.NewsFeedRepository
@@ -23,6 +22,9 @@ open class FeedPresenter(private val view: FeedView) {
 
     private val KEY_RECYCLERVIEW_STATE = "key_recyclerview_state"
 
+    // private val apiClient: ApiInterceptor = ApiManager()
+    private lateinit var apiClient: ApiInterceptor
+
     private var recyclerViewState: Parcelable? = null
 
     private val liveFeedList: LiveData<MutableList<NewsFeed>>
@@ -30,18 +32,17 @@ open class FeedPresenter(private val view: FeedView) {
     companion object {
 
         private var INSTANCE: FeedPresenter? = null
-
-        private lateinit var apiClient: ApiInterceptor
         private lateinit var repository: FeedRepository
 
-        fun getInstance(context: Context, view: FeedView): FeedPresenter =
+        fun getInstance(
+            context: Context, apiClient: ApiInterceptor, view: FeedView
+        ): FeedPresenter =
             INSTANCE ?: synchronized(this) {
-                apiClient = ApiManager(context)
-
                 val database = RoomDatabaseBuilder.getInstance(context)
                 repository = FeedRepository(database.getNewsFeedDao())
 
                 INSTANCE = FeedPresenter(view)
+                INSTANCE!!.apiClient = apiClient
                 INSTANCE!!
             }
     }
@@ -58,28 +59,36 @@ open class FeedPresenter(private val view: FeedView) {
             override fun onSuccess(
                 apiTag: String, message: String, apiResponse: NewsFeedRepository
             ) {
-                val disposable =
-                    Observable.fromCallable {
-                        repository.insertOrUpdateData(
-                            apiResponse.getDataList(), liveFeedList.value?.isNotEmpty() ?: false
-                        )
-                    }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                            {},
-                            {
-                                println("TAG --- $TAG --> ${it.message}")
-                            },
-                            {
-                                view.onDataFetched(apiResponse)
-                            })
+                println("TAG --- $TAG --> $message")
+                view.onDataFetched(apiResponse)
+                if (apiResponse.getDataList().isNotEmpty()) {
+                    val disposable =
+                        Observable.fromCallable {
+                            repository.insertOrUpdateData(
+                                apiResponse.getDataList(), liveFeedList.value?.isNotEmpty() ?: false
+                            )
+                        }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                {},
+                                {
+                                    println("TAG --- $TAG -- db_operation --> ${it.message}")
+                                },
+                                {
+                                    view.onDataFetched(apiResponse)
+                                })
+                }
             }
 
             override fun onComplete(apiTag: String, message: String) {
+                println("TAG --- $TAG --> $message")
             }
 
-            override fun onError(apiTag: String, message: String) = view.onFailed(apiTag, message)
+            override fun onError(apiTag: String, message: String) {
+                println("TAG --- $TAG --> $message")
+                view.onFailed(apiTag, message)
+            }
 
             override fun onError(apiTag: String, throwable: Throwable) =
                 view.onFailed(apiTag, throwable.message ?: "")

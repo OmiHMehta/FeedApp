@@ -1,21 +1,23 @@
 package com.telstra.feedapp.ui.feeds.presenter
 
 import android.content.Context
-import com.telstra.feedapp.database.daointerfaces.NewsFeedsDao
-import com.telstra.feedapp.database.room.RoomDatabaseBuilder
-import com.telstra.feedapp.models.NewsFeed
-import com.telstra.feedapp.networkadapter.api.ApiManager
+import androidx.lifecycle.LifecycleOwner
 import com.telstra.feedapp.networkadapter.api.request.ApiInterceptor
 import com.telstra.feedapp.networkadapter.api.response.ApiResponse
+import com.telstra.feedapp.networkadapter.apiconstants.ApiProvider
 import com.telstra.feedapp.repositories.NewsFeedRepository
+import com.telstra.feedapp.ui.feeds.view.FeedView
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.plugins.RxJavaPlugins
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
@@ -26,13 +28,23 @@ open class FeedPresenterTest {
 
     private val TAG: String = FeedPresenterTest::class.java.simpleName
 
-    private lateinit var apiClient: ApiInterceptor
+    private lateinit var presenter: FeedPresenter
+
+    private val response: NewsFeedRepository = NewsFeedRepository()
+
+    private val lifecycleOwner: LifecycleOwner = Mockito.mock(LifecycleOwner::class.java)
 
     @Mock
     private lateinit var context: Context
 
     @Mock
-    lateinit var nFeedDao: NewsFeedsDao
+    lateinit var view: FeedView
+
+    @Mock
+    internal lateinit var apiClient: ApiInterceptor
+
+    @Captor
+    private lateinit var argumentCaptor: ArgumentCaptor<ApiResponse<NewsFeedRepository>>
 
     private val scheduler = object : Scheduler() {
         override fun createWorker(): Worker =
@@ -41,55 +53,43 @@ open class FeedPresenterTest {
 
     @Before
     fun setUp() {
-
         RxJavaPlugins.setInitIoSchedulerHandler { scheduler }
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { scheduler }
 
-        apiClient = ApiManager(context)
-
-        val database = RoomDatabaseBuilder.getInstance(context)
-        nFeedDao = database.getNewsFeedDao()
-
+        presenter = FeedPresenter.getInstance(context, apiClient, view)
     }
 
     @Test
-    fun testApiCall() {
-        Mockito.`when`(apiClient.getNewsFeed(apiResponse = object :
-            ApiResponse<NewsFeedRepository> {
-            override fun onSuccess(
-                apiTag: String, message: String, apiResponse: NewsFeedRepository
-            ) {
-                println("TAG --- $TAG --> ${apiResponse.getDataList().size} - Api Called")
-            }
+    fun testSuccessfulApiCall() {
+        makeApiCall()
 
-            override fun onComplete(apiTag: String, message: String) {
-            }
+        // TODO : Test Successful response
+        argumentCaptor.value.onSuccess(
+            ApiProvider.ApiGetNewsFeed, "argumentCaptor : onSuccess called", response
+        )
+        Mockito.verify(view).onDataFetched(response)
+        Assert.assertEquals(response, response)
 
-            override fun onError(apiTag: String, message: String) {
-                println("TAG --- $TAG --> $message")
-            }
-
-            override fun onError(apiTag: String, throwable: Throwable) {
-                println("TAG --- $TAG --> ${throwable.message}")
-            }
-        })).then {}
-    }
-
-    @Test
-    fun testDataBase() {
-        val tempData: MutableList<NewsFeed> = mutableListOf()
-        tempData.add(NewsFeed(title = "Omi", description = "Technology Analyst"))
-        tempData.add(NewsFeed(title = "Dhaval", description = "Investment Manager"))
-        tempData.add(NewsFeed(title = "Harshal", description = "Flutter Developer"))
-        tempData.add(NewsFeed(title = "Shreya", description = "IOS developer"))
-        tempData.add(NewsFeed(title = "Hasmukh", description = "Android Developer"))
-
-        nFeedDao.insertData(tempData)
+        // TODO : Test Failing response
+        argumentCaptor.value.onError(
+            ApiProvider.ApiGetNewsFeed, "argumentCaptor : onError called"
+        )
+        Mockito.verify(view).onFailed(
+            ApiProvider.ApiGetNewsFeed, "argumentCaptor : onError called"
+        )
+        Assert.assertEquals(
+            "argumentCaptor : onError called", "argumentCaptor : onError called"
+        )
     }
 
     @After
     fun tearDown() {
         RxJavaPlugins.reset()
         RxAndroidPlugins.reset()
+    }
+
+    private fun makeApiCall() {
+        presenter.getNewsFeedList()
+        Mockito.verify(apiClient).getNewsFeed(argumentCaptor.capture())
     }
 }

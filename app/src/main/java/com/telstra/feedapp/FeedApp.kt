@@ -1,6 +1,7 @@
 package com.telstra.feedapp
 
 import android.app.Application
+import java.io.File
 
 class FeedApp : Application() {
 

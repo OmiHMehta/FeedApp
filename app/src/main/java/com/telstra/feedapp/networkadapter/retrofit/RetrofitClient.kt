@@ -1,11 +1,8 @@
 package com.telstra.feedapp.networkadapter.retrofit
 
-import android.content.Context
 import com.google.gson.GsonBuilder
 import com.telstra.feedapp.networkadapter.api.request.ApiInterface
 import com.telstra.feedapp.networkadapter.apiconstants.ApiConstants
-import com.telstra.feedapp.utility.NetworkProvider
-import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,7 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 class RetrofitClient() {
@@ -27,14 +23,15 @@ class RetrofitClient() {
 
     companion object {
 
-        private var context: Context? = null
+        //private var context: Context? = null
         private lateinit var instance: RetrofitClient
 
-        fun getInstance(context: Context): RetrofitClient {
-            if (this.context == null) {
+        fun getInstance(): RetrofitClient {
+            /*if (this.context == null) {
                 this.context = context
                 instance = RetrofitClient()
-            }
+            }*/
+            if (!::instance.isInitialized) instance = RetrofitClient()
             return instance
         }
     }
@@ -55,7 +52,7 @@ class RetrofitClient() {
 
     private fun initOkHttp() {
         httpClient = OkHttpClient().newBuilder()
-            .cache(getCacheDir())
+            //.cache(getCacheDir())
             .addInterceptor(httpLoggingInterceptor())
             .addNetworkInterceptor(networkInterceptor())
             //.addInterceptor(offlineInterceptor())
@@ -72,11 +69,11 @@ class RetrofitClient() {
     }
 
     // TODO : Custom cache directory for app
-    private fun getCacheDir(): Cache {
+    /*private fun getCacheDir(): Cache {
         val cacheDirectory = File(context!!.cacheDir, "offline_caching")
         val cacheSize: Long = 5 * 1024 * 1024
         return Cache(cacheDirectory, cacheSize)
-    }
+    }*/
 
     // TODO : Use "networkInterceptor" ONLY when network is available
     private fun networkInterceptor(): Interceptor {
@@ -94,7 +91,7 @@ class RetrofitClient() {
     }
 
     // TODO : Use "offlineInterceptor" when network is available/not
-    private fun offlineInterceptor(): Interceptor {
+    /*private fun offlineInterceptor(): Interceptor {
         return Interceptor { chain ->
             println("TAG --- $TAG --> offline interceptor : called.")
             var request = chain.request()
@@ -113,5 +110,5 @@ class RetrofitClient() {
             }
             chain.proceed(request)
         }
-    }
+    }*/
 }

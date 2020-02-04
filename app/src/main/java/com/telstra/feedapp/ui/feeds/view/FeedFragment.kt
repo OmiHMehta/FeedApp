@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telstra.feedapp.R
 import com.telstra.feedapp.adapters.NewsFeedAdapter
+import com.telstra.feedapp.networkadapter.api.ApiManager
 import com.telstra.feedapp.repositories.NewsFeedRepository
 import com.telstra.feedapp.ui.feeds.presenter.FeedPresenter
 import io.reactivex.Observable
@@ -28,7 +29,7 @@ class FeedFragment : Fragment(), FeedView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        presenter = FeedPresenter.getInstance(context!!, this)
+        presenter = FeedPresenter.getInstance(context!!, ApiManager(), this)
 
         // TODO : Observe list with changes in data and update UI
         presenter.getLiveData().observe(this, Observer { it?.let { adapter.setListData(it) } })
