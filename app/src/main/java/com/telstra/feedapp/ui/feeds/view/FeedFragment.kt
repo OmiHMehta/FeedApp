@@ -67,7 +67,9 @@ class FeedFragment : Fragment(), FeedView {
 
     override fun onFailed(apiTag: String, message: String) {
         slSwipeRefreshLayout.isRefreshing = false
-        context?.let { Toast.makeText(it, message, Toast.LENGTH_LONG).show() }
+        context?.let {
+            Toast.makeText(it, R.string.no_internet_connection, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun initViews() {

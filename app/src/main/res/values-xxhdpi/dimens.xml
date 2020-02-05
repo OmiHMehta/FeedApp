@@ -9,4 +9,7 @@
     <dimen name="text_size_11">13sp</dimen>
     <dimen name="text_size_15">16sp</dimen>
 
+    <dimen name="view_width_130">135dp</dimen>
+    <dimen name="view_height_80">85sp</dimen>
+
 </resources>
