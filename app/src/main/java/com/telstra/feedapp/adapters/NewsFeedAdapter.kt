@@ -17,8 +17,7 @@ import com.telstra.feedapp.R
 import com.telstra.feedapp.models.NewsFeed
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 
-class NewsFeedAdapter() :
-    RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
+class NewsFeedAdapter : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     private val TAG: String = NewsFeedAdapter::class.java.simpleName
 
