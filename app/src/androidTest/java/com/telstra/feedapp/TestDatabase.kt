@@ -14,6 +14,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class TestDatabase {
+
     private val TAG: String = TestDatabase::class.java.simpleName
 
     private var activity: MainActivity? = null
@@ -29,7 +30,7 @@ class TestDatabase {
     fun setUp() {
         testRule?.let {
             activity = it.activity
-            database = RoomDatabaseBuilder.getInstance(activity!!)
+            database = RoomDatabaseBuilder.getInMemoryDatabase(activity!!)
             nFeedDao = database.getNewsFeedDao()
         }
     }

@@ -26,5 +26,12 @@ abstract class RoomDatabaseBuilder : RoomDatabase() {
                 ).build()
                 INSTANCE!!
             }
+
+        fun getInMemoryDatabase(context: Context): RoomDatabaseBuilder =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE = Room.inMemoryDatabaseBuilder(context, RoomDatabaseBuilder::class.java)
+                    .build()
+                INSTANCE!!
+            }
     }
 }

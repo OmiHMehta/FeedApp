@@ -10,10 +10,7 @@ import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.plugins.RxJavaPlugins
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor

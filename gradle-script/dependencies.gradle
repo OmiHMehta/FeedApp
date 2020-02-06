@@ -64,6 +64,9 @@ ext {
     testRunnerPackage = 'androidx.test:runner'
     testRule = 'androidx.test:rules'
 
+    testCoreVersion = "2.1.0"
+    testCorePackage = "androidx.arch.core:core-runtime"
+
     mockitoVersion = '2.13.0'
     mockitoInlinePackage = 'org.mockito:mockito-inline'
     mockitoCorePackage = 'org.mockito:mockito-core'
@@ -90,7 +93,8 @@ ext {
     jUnitTesting = [
             jUnit     : buildDependency(junitPackage, junitVersion),
             testRunner: buildDependency(testRunnerPackage, testVersion),
-            testRule  : buildDependency(testRule, testVersion)
+            testRule  : buildDependency(testRule, testVersion),
+            coreTest  : buildDependency(testCorePackage, testCoreVersion)
     ]
 
     mockito = [
