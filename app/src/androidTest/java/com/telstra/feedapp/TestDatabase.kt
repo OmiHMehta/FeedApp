@@ -15,14 +15,16 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4ClassRunner::class)
 class TestDatabase {
 
+    private val TAG: String = TestDatabase::class.java.simpleName
+
     private var activity: MainActivity? = null
+
+    private lateinit var database: RoomDatabaseBuilder
+    private var nFeedDao: NewsFeedsDao? = null
 
     @get:Rule
     var testRule: ActivityTestRule<MainActivity>? =
         ActivityTestRule<MainActivity>(MainActivity::class.java)
-
-    private lateinit var database: RoomDatabaseBuilder
-    private var nFeedDao: NewsFeedsDao? = null
 
     @Before
     fun setUp() {
@@ -36,11 +38,11 @@ class TestDatabase {
     @Test
     fun testInsertDataIntoDataBase() {
         val tempData: MutableList<NewsFeed> = mutableListOf()
-        tempData.add(NewsFeed(title = "Omi", description = "Technology Analyst"))
-        tempData.add(NewsFeed(title = "Dhaval", description = "Investment Manager"))
-        tempData.add(NewsFeed(title = "Harshal", description = "Flutter Developer"))
-        tempData.add(NewsFeed(title = "Shreya", description = "IOS developer"))
-        tempData.add(NewsFeed(title = "Hasmukh", description = "Android Developer"))
+        tempData.add(NewsFeed(id = 1, title = "Omi", description = "Technology Analyst"))
+        tempData.add(NewsFeed(id = 2, title = "Dhaval", description = "Investment Manager"))
+        tempData.add(NewsFeed(id = 3, title = "Harshal", description = "Flutter Developer"))
+        tempData.add(NewsFeed(id = 4, title = "Shreya", description = "IOS developer"))
+        tempData.add(NewsFeed(id = 5, title = "Hasmukh", description = "Android Developer"))
 
         nFeedDao!!.insertData(tempData)
     }
