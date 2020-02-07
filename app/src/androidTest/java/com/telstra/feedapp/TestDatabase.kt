@@ -1,16 +1,20 @@
 package com.telstra.feedapp
 
+import android.content.Intent
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.telstra.feedapp.database.daointerfaces.NewsFeedsDao
 import com.telstra.feedapp.database.room.RoomDatabaseBuilder
 import com.telstra.feedapp.models.NewsFeed
 import com.telstra.feedapp.ui.feeds.MainActivity
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import org.hamcrest.CoreMatchers
+import org.junit.*
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class TestDatabase {
@@ -51,6 +55,14 @@ class TestDatabase {
         } finally {
             database.close()
         }*/
+
+        /*val activity = InstrumentationRegistry.getInstrumentation().startActivitySync(Intent())
+        val recyclerView: RecyclerView = activity.findViewById(R.id.rvNewsFeedList)
+        Assert.assertThat(recyclerView.adapter, CoreMatchers.notNullValue())
+        Observable.timer(2, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                println("TAG --- $TAG --> ${recyclerView.adapter?.itemCount ?: 0}")
+            }*/
     }
 
     @Test

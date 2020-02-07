@@ -22,7 +22,6 @@ open class FeedPresenter(private val view: FeedView) {
 
     private val KEY_RECYCLERVIEW_STATE = "key_recyclerview_state"
 
-    // private val apiClient: ApiInterceptor = ApiManager()
     private lateinit var apiClient: ApiInterceptor
 
     private var recyclerViewState: Parcelable? = null

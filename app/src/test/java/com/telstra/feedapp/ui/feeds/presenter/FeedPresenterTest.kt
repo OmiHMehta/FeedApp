@@ -10,7 +10,9 @@ import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.plugins.RxJavaPlugins
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
@@ -62,7 +64,6 @@ open class FeedPresenterTest {
             ApiProvider.ApiGetNewsFeed, "argumentCaptor : onSuccess called", response
         )
         Mockito.verify(view).onDataFetched(response)
-        Assert.assertEquals(response, response)
 
         // TODO : Test Failing response
         argumentCaptor.value.onError(
@@ -70,9 +71,6 @@ open class FeedPresenterTest {
         )
         Mockito.verify(view).onFailed(
             ApiProvider.ApiGetNewsFeed, "argumentCaptor : onError called"
-        )
-        Assert.assertEquals(
-            "argumentCaptor : onError called", "argumentCaptor : onError called"
         )
     }
 

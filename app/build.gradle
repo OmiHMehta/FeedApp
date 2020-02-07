@@ -90,4 +90,5 @@ dependencies {
     // TODO : Mockito for Unit Testing
     testImplementation mockito.mockitoInline
     testImplementation mockito.mockitoCore
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 }

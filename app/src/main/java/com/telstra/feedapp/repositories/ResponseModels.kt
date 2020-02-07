@@ -8,10 +8,10 @@ import com.telstra.feedapp.networkadapter.apiconstants.ApiConstants
 class NewsFeedRepository : ApiStatus() {
 
     @SerializedName(ApiConstants.Title)
-    private val title: String? = null
+    private var title: String? = null
 
     @SerializedName(ApiConstants.Rows)
-    private val dataList: MutableList<NewsFeed>? = mutableListOf()
+    private var dataList: MutableList<NewsFeed>? = mutableListOf()
 
     fun getTitle() = title ?: "N/A"
 
